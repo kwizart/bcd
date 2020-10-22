@@ -63,7 +63,10 @@ SET(header_files
 SET(header_implementation_files
 )
 
-ADD_LIBRARY(${target_name} STATIC ${src_files} ${header_files} ${header_implementation_files})
+ADD_LIBRARY(${target_name} SHARED ${src_files} ${header_files} ${header_implementation_files})
+TARGET_LINK_LIBRARIES(${target_name} PRIVATE ${OPENEXR_LDFLAGS} -lIlmImf -lImath -lHalf -lIex -lIexMath -lIlmThread )
+set_property(TARGET ${target_name} PROPERTY VERSION "0.0.0")
+set_property(TARGET ${target_name} PROPERTY SOVERSION 0 )
 
 
 TARGET_INCLUDE_DIRECTORIES(${target_name} PUBLIC "${bcd_include_folder}/io")
@@ -72,8 +75,8 @@ TARGET_INCLUDE_DIRECTORIES(${target_name} PRIVATE ${exr_folder})
 
 SET_TARGET_PROPERTIES(${target_name} PROPERTIES CXX_STANDARD 11)
 TARGET_LINK_LIBRARIES(${target_name} PUBLIC ${lib_bcd_core})
-TARGET_LINK_LIBRARIES(${target_name} PRIVATE OpenExr)
-TARGET_LINK_LIBRARIES(${target_name} PRIVATE Json)
+TARGET_LINK_LIBRARIES(${target_name} PRIVATE ${OPENEXR_LDFLAGS})
+TARGET_LINK_LIBRARIES(${target_name} PRIVATE ${JSONCPP_LDFLAGS})
 
 INSTALL(TARGETS ${target_name} ARCHIVE DESTINATION lib)
 

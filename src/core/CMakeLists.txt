@@ -87,10 +87,12 @@ IF(CUDA_FOUND)
 		${bcd_core_include_folder}/CudaUtils.h
 	)
 	CUDA_INCLUDE_DIRECTORIES(${bcd_core_include_folder}) # sadly, the TARGET_INCLUDE_DIRECTORIES a few lines below does not work with CUDA, see https://cmake.org/Bug/view.php?id=14201
-	CUDA_ADD_LIBRARY(${target_name} ${src_files} ${header_files} ${header_implementation_files} STATIC)
+	CUDA_ADD_LIBRARY(${target_name} ${src_files} ${header_files} ${header_implementation_files} SHARED)
 	TARGET_COMPILE_DEFINITIONS(${target_name} PRIVATE FOUND_CUDA)
 ELSE(CUDA_FOUND)
-	ADD_LIBRARY(${target_name} STATIC ${src_files} ${header_files} ${header_implementation_files})
+	ADD_LIBRARY(${target_name} SHARED ${src_files} ${header_files} ${header_implementation_files})
+	set_property(TARGET ${target_name} PROPERTY VERSION "0.0.0")
+	set_property(TARGET ${target_name} PROPERTY SOVERSION 0 )
 ENDIF(CUDA_FOUND)
 
 
@@ -100,8 +102,8 @@ SET_TARGET_PROPERTIES(${target_name} PROPERTIES CXX_STANDARD 11)
 if (OPENMP_FOUND)
 TARGET_LINK_LIBRARIES(${target_name} PUBLIC OpenMP)
 endif (OPENMP_FOUND)
-TARGET_LINK_LIBRARIES(${target_name} PRIVATE eigen)
+#TARGET_LINK_LIBRARIES(${target_name} PRIVATE eigen3)
 
-INSTALL(TARGETS ${target_name} ARCHIVE DESTINATION lib)
+INSTALL(TARGETS ${target_name} ARCHIVE DESTINATION lib${LIB_SUFFIX})
 
 
