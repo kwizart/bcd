@@ -111,9 +111,6 @@ ENDIF(BCD_USE_CUDA)
 SET(bcd_include_folder "${CMAKE_SOURCE_DIR}/include/bcd")
 
 
-#MESSAGE(STATUS "Entering subdirectory 'ext'")
-ADD_SUBDIRECTORY(ext)
-
 #MESSAGE(STATUS "Entering subdirectory 'src'")
 ADD_SUBDIRECTORY(src)
 
